@@ -1,20 +1,32 @@
 #include <stdio.h>
 
-int main(){
-    int num;
-    int max = 0;
-    int max_2 = 0;
-    for(int i = 0; i <= 3; i++){
-         scanf("%d",&num);
-            if(num > max){
-                max = num;
-            }
-    }printf("%d",max);
-    for(int j = 0; j <= 3; j ++){
-            scanf("%d",&num);
-            if(num > max_2 && num != max){
-                max_2 = num;
-            }
-          
-        } printf(" %d",max_2);
+int main() {
+    int arr[4];
+    int a;
+    for(int i = 0; i < 4; i++) {
+        printf("Введите число: ");
+        scanf("%d", &a);
+        arr[i] = a;
+    }
+    int max = arr[0];
+    int max_2 = -2147483648; 
+  
+    for(int i = 1; i < 4; i++) {
+        if(arr[i] > max) {
+            max_2 = max; 
+            max = arr[i]; 
+        } else if(arr[i] > max_2 && arr[i] != max) {
+            max_2 = arr[i]; 
+        }
+    }
+
+    if (max_2 == -2147483648) {
+        printf("Нет второго максимума.\n");
+    } else {
+ 
+        printf("Первый максимум: %d\n", max);
+        printf("Второй максимум: %d\n", max_2);
+    }
+
+    return 0;
 }
