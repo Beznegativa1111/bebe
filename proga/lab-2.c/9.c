@@ -1,27 +1,37 @@
 #include <stdio.h>
+#include <stdbool.h>
 
 int main(){
-    int num;
-    int max = 0;
-    int max_2;
-    int max_m;
-    for(int i = 0; i <= 3; i++){
-         scanf("%d",&num);
-            if(num > max){
-                max = num;
-            }
-    }printf("%d",max);
-    for(int j = 0; j <= 3; j ++){
-            scanf("%d",&num);
-            if(num > max_2 && num != max){
-                max_2 = num;
-            }
-          
-        }printf(" %d",max_2); 
-        max_m = max;
-        max = max_2;
-        max_2 = max_m;
-        
-    printf("%d %d",max,max_m);
+    int arr[4]; 
+    int a;
+    for(int i = 0; i < 4; i++) {
+        printf("Введите число: ");
+        scanf("%d", &a);
+        arr[i] = a;
+    }
+    int min = arr[0];
+    int index = 0;
+    int index_2 = 0;
+    int max = arr[0];
+    int per = 0;
+    for(int i =0; i< 4; i++){
+        if(arr[i] < min){
+            min = arr[i];
+            index = i;
+        }
+        if(arr[i] > max){
+            max = arr[i];
+            index_2 = i;
+        }
+    }
+    int temp = arr[index]; 
+    arr[index] = arr[index_2]; 
+    arr[index_2] = temp;
+    
+    printf("Массив после обмена максимумов: ");
+    for (int i = 0; i < 4; i++) {
+        printf("%d ", arr[i]);
+        }
+ 
+    
 }
-
