@@ -9,7 +9,7 @@ int main() {
         arr[i] = a;
     }
     int max = arr[0];
-    int max_2 = -2147483648; 
+    int max_2 = -500000; 
   
     for(int i = 1; i < 4; i++) {
         if(arr[i] > max) {
@@ -20,7 +20,7 @@ int main() {
         }
     }
 
-    if (max_2 == -2147483648) {
+    if (max_2 == -500000) {
         printf("Нет второго максимума.\n");
     } else {
  
