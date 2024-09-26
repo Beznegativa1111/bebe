@@ -13,7 +13,6 @@ int main(){
     int index = 0;
     int index_2 = 0;
     int max = arr[0];
-    int per = 0;
     for(int i =0; i< 4; i++){
         if(arr[i] < min){
             min = arr[i];
