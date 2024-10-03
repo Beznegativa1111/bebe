@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <math.h> // Для функции pow
+#include <math.h> 
 
 double factorial(int n) {
     double result = 1.0;
@@ -10,9 +10,9 @@ double factorial(int n) {
 }
 
 double calculate_sum(double x, int N) {
-    double sum = 1.0; // Начинаем с первого члена ряда (1)
+    double sum = 1.0; 
     
-    // Вычисляем последующие члены ряда
+    
     for (int i = 1; i <= N; ++i) {
         sum += (pow(x, i) / factorial(i));
     }
@@ -24,24 +24,24 @@ int main() {
     double x;
     int N;
 
-    // Ввод значения x
+    
     printf("Введите значение x: ");
     scanf("%lf", &x);
 
-    // Ввод значения N
+    
     printf("Введите значение N (N > 0): ");
     scanf("%d", &N);
 
-    // Проверка корректности введенного N
+    
     if (N <= 0) {
         printf("Ошибка: N должно быть больше 0.\n");
         return 1;
     }
 
-    // Вычисление суммы ряда
+
     double result = calculate_sum(x, N);
     
-    // Вывод результата
+    
     printf("Сумма ряда для x = %.2f и N = %d равна: %.6f\n", x, N, result);
 
     return 0;
