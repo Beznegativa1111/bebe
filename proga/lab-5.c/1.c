@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <math.h>
+
 int main()
 {
     double e = 0.00001;
