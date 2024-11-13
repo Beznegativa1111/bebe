@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_LEN 1000      
+#define MAX_NAMES 100   
+
+int main() {
+    char input[MAX_LEN];                  
+    char names[MAX_NAMES][MAX_LEN];       
+    int count = 0;                        
+    int i, j, k;
+
+    printf("Введите фамилии через запятую: ");
+    fgets(input, sizeof(input), stdin);  
+
+
+    for (i = 0; input[i] != '\0'; i++) {
+        if (input[i] == '\n') {
+            input[i] = '\0';
+            break;
+        }
+    }
+
+    int len = strlen(input);
+    int start = 0;
+
+    for (i = 0; i < len; i++) {
+        if (input[i] == ',') {
+      
+            for (k = start; k < i; k++) {
+                names[count][k - start] = input[k];
+            }
+            names[count][i - start] = '\0';
+            count++;
+            start = i + 1;  
+        }
+    }
+
+ 
+    if (start < len) {
+        for (k = start; k < len; k++) {
+            names[count][k - start] = input[k];
+        }
+        names[count][len - start] = '\0';
+        count++;
+    }
+
+  
+    for (i = 0; i < count - 1; i++) {
+        for (j = 0; j < count - i - 1; j++) {
+            if (strcmp(names[j], names[j + 1]) > 0) {
+            
+                char temp[MAX_LEN];
+                strcpy(temp, names[j]);
+                strcpy(names[j], names[j + 1]);
+                strcpy(names[j + 1], temp);
+            }
+        }
+    }
+
+
+    printf("Отсортированные фамилии:\n");
+    for (i = 0; i < count; i++) {
+        printf("%s\n", names[i]);
+    }
+
+    return 0;
+}
