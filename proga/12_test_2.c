@@ -8,50 +8,38 @@ using namespace sf;
 int main()
 {
     // Создаем окно
-    RenderWindow win(VideoMode(1920, 1080), "lol");
+    RenderWindow win(VideoMode(1920, 1080), "Snowfall");
 
-     // Загружаем иконку
+    // Загружаем иконку
     Image icon;
     if (!icon.loadFromFile("icon.png")) {
-        std::cerr << "Error(icont" << std::endl;
+        std::cerr << "Error(icon)" << std::endl;
         return -1;
     }
     win.setIcon(512, 512, icon.getPixelsPtr());
 
-    // Загружаем текстуру игровой панели
-    Texture texture;
-    if (!texture.loadFromFile("icon.png")) {
-        std::cout << "Error(panel is undefined)" << std::endl;
-        return -1;
-    }
-    Sprite GamePanel;
-    GamePanel.setTexture(texture);
-
-
-    Texture Snow;
-    if (!Snow.loadFromFile("huy.png")) {
+    // Загружаем текстуру снежинок
+    Texture snowTexture;
+    if (!snowTexture.loadFromFile("huy.png")) {
         std::cout << "Error(Snow is undefined)" << std::endl;
         return -1;
     }
 
-    std::vector<Sprite> snowBall;
+    std::vector<Sprite> snowflakes;
     const int num = 100;
     std::random_device rd;
     std::mt19937 gen(rd()); // Инициализация генератора
     std::uniform_real_distribution<> disX(0, 1920); // Для координаты X
-    std::uniform_real_distribution<> disY(0, 1080);
+    std::uniform_real_distribution<> disY(0, 1080); // Для координаты Y
 
-
-    for(int i =0;i<num;i++){
-        Sprite snow;
-        snow.setTexture(Snow);
+    // Инициализация снежинок
+    for (int i = 0; i < num; i++) {
+        Sprite snowflake;
+        snowflake.setTexture(snowTexture);
         float x = disX(gen);
-        float y = disY(gen);
-
-        snow.setPosition(x,y);
-
-        snowBall.push_back(snow);
-
+        float y = disY(gen); // Теперь мы получаем случайную Y
+        snowflake.setPosition(x, y); // Позиция задается случайно
+        snowflakes.push_back(snowflake);
     }
 
     // Загружаем текстуру фона
@@ -60,75 +48,56 @@ int main()
         std::cerr << "Error(texture is undefined)" << std::endl;
         return -1;
     }
-    // 1 cтруктура
-    RectangleShape BackSpace(Vector2f(1920, 1080));
-    BackSpace.setTexture(&textureBackSpace);
-    BackSpace.setPosition(Vector2f(0, 0));
-    // 2 структура
-    RectangleShape BackSpace2(Vector2f(1920, 1080));
-    BackSpace2.setTexture(&textureBackSpace);
-    BackSpace2.setPosition(Vector2f(1920, 0)); // Позиция второго фона
+    RectangleShape background(Vector2f(1920, 1080));
+    background.setTexture(&textureBackSpace);
 
-    Vector2f pos;
-    float time;
-    bool isTrue = true;
-    float duration = 5.0f;
-    float speed = 5.0f;
-
+    // Временные переменные
+    std::vector<float> disappearTimes(num, 0.0f); // Время, прошедшее с исчезновения для каждой снежинки
+    std::vector<float> randomDelays(num); // Случайные задержки для каждой снежинки
+    Clock clock; // Инициализируем один раз
+    for (int i = 0; i < num; i++) {
+        randomDelays[i] = static_cast<float>(rand() % 5 + 1); // от 1 до 5 секунд
+    }
 
     // Главный цикл приложения
-    while (win.isOpen())
-        {
+    while (win.isOpen()) {
         Event event;
-
-        Clock clock;
-        float deltatime = clock.restart().asSeconds();
-        std::vector<float> disappearTimes(num, 0);
-        std::vector<float> randomDelays(num, 0);
-
-
-        while (win.pollEvent(event))
-        {
-            if (event.type == Event::Closed)
-            {
-                 win.close();
+        while (win.pollEvent(event)) {
+            if (event.type == Event::Closed) {
+                win.close();
             }
-
         }
 
+        float deltaTime = clock.restart().asSeconds(); // Получаем время с последнего обновления
+
+        // Очистка окна
         win.clear();
-        BackSpace.setPosition(1920,pos.y);
-        BackSpace2.setPosition(1920,pos.y);
+        win.draw(background);
 
-        win.draw(BackSpace);
-        win.draw(BackSpace2);
-        win.draw(GamePanel);
+        for (size_t i = 0; i < snowflakes.size(); i++) {
+            Sprite& snowflake = snowflakes[i];
+            disappearTimes[i] += deltaTime;
 
-        if(isTrue){
-            for(Sprite& snowflacke:snowBall){
-                snowflacke.move(0,1);
-                if(snowflacke.getPosition().y > 1080){
-                    float x = disX(gen);
-                    float y = disY(gen);
-                    snowflacke.setPosition(x,y);
-
-                }
-                win.draw(snowflacke);
+            if (disappearTimes[i] > randomDelays[i]) {
+                float x = disX(gen);
+                float y = disY(gen); // Случайная позиция для Y
+                snowflake.setPosition(x, y); // Появление в случайной позиции
+                disappearTimes[i] = 0; // Сброс таймера
+                randomDelays[i] = static_cast<float>(rand() % 5 + 1); // Новая случайная задержка
+            } else {
+                snowflake.move(0, 200 * deltaTime); // Перемещение снежинки вниз
             }
+
+            // Проверка, не вышла ли снежинка за пределы экрана
+            if (snowflake.getPosition().y > 1080) {
+                snowflake.setPosition(disX(gen), -50); // Возвращаем снежинку в верхнюю часть
+            }
+
+            win.draw(snowflake); // Рисуем снежинку
         }
 
+        win.display(); // Отображаем все на экране после всех отрисовок
+    }
 
-
-
-
-
-
-
-        win.display(); // Отображаем все на экране
-        }
+    return 0;
 }
-
-
-
-
-
