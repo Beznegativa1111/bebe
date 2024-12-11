@@ -1,0 +1,380 @@
+#include <SFML/Graphics.hpp>
+#include <iostream>
+#include <vector>
+#include <random>
+
+using namespace sf;
+
+void openFreeMovement(RenderWindow &win) {
+    Texture fon;
+    if (!fon.loadFromFile("more.jpg")) {
+        std::cout << "Error(panel is undefined)" << std::endl;
+        return;
+    }
+    Sprite fone;
+    fone.setTexture(fon);
+
+
+    Texture korabl;
+    if (!korabl.loadFromFile("ship.png")) {
+        std::cout << "Error(panel is undefined)" << std::endl;
+        return;
+    }
+    Sprite ship;
+    ship.setTexture(korabl);
+
+
+    Texture tomenu;
+    if (!tomenu.loadFromFile("menu.png")) {
+        std::cout << "Error(panel is undefined)" << std::endl;
+        return;
+    }
+    Sprite MainMenu;
+    MainMenu.setTexture(tomenu);
+
+
+    Clock clock;
+    float time;
+    bool i = true;
+
+
+
+    while (win.isOpen()) {
+        Event event;
+        time = clock.restart().asSeconds();
+        while (win.pollEvent(event)) {
+            if (event.type == Event::Closed) {
+                win.close();
+            }
+            if(event.type == Event::MouseButtonPressed){
+                Vector2i mousePos = Mouse::getPosition(win);
+                if (MainMenu.getGlobalBounds().contains((float)mousePos.x, (float)mousePos.y)) {
+                        return;
+                    }
+            }
+        }
+
+        win.clear();
+         if(i){
+            ship.move(0,500*time);
+            if(ship.getPosition().y > 1080){
+                ship.setPosition(0,0);
+                i = false;
+            }
+        }
+        else if(i == false){
+            ship.move(500*time,0);
+            if(ship.getPosition().x > 1980){
+                ship.setPosition(0,0);
+                i = true;
+            }
+        }
+        win.draw(fone);
+        win.draw(ship);
+        win.draw(MainMenu);
+
+
+        win.display();
+    }
+}
+void manageKeyboardShip(RenderWindow &win){
+
+
+       Texture fon;
+    if (!fon.loadFromFile("more.jpg")) {
+        std::cout << "Error(panel is undefined)" << std::endl;
+        return;
+    }
+    Sprite fone;
+    fone.setTexture(fon);
+
+
+    Texture korabl;
+    if (!korabl.loadFromFile("ship.png")) {
+        std::cout << "Error(panel is undefined)" << std::endl;
+        return;
+    }
+    Sprite ship;
+
+
+    ship.setTexture(korabl);
+
+
+    Texture tomenu;
+    if (!tomenu.loadFromFile("menu.png")) {
+        std::cout << "Error(panel is undefined)" << std::endl;
+        return;
+    }
+    Sprite MainMenu;
+    MainMenu.setTexture(tomenu);
+
+
+
+    ship.setPosition(500,500);
+    while (win.isOpen()) {
+        Event event;
+        while (win.pollEvent(event)) {
+            if (event.type == Event::Closed) {
+                win.close();
+            }
+              if(event.type == Event::MouseButtonPressed){
+                Vector2i mousePos = Mouse::getPosition(win);
+                if (MainMenu.getGlobalBounds().contains((float)mousePos.x, (float)mousePos.y)) {
+                        return;
+                    }
+            }
+        }
+        win.clear();
+
+        if(Keyboard::isKeyPressed(Keyboard::Num4)){ship.move(-50,0);}
+        if(Keyboard::isKeyPressed(Keyboard::Num6)){ship.move(50,0);}
+        if(Keyboard::isKeyPressed(Keyboard::Num8)){ship.move(0,-50);}
+        if(Keyboard::isKeyPressed(Keyboard::Num2)){ship.move(0,50);}
+        if(ship.getPosition().y > 1080){
+            ship.setPosition(500,500);
+        }
+         if(ship.getPosition().x > 1920){
+            ship.setPosition(500,500);
+        }
+         if(ship.getPosition().y < 0){
+            ship.setPosition(500,500);
+        }
+          if(ship.getPosition().x < 0){
+            ship.setPosition(500,500);
+        }
+        win.draw(fone);
+        win.draw(ship);
+        win.draw(MainMenu);
+
+
+        win.display();
+
+    }
+
+
+}
+
+
+
+
+
+
+int main()
+{
+    RenderWindow win(VideoMode(1920, 1080), "lol");
+
+
+    Texture fone;
+    if (!fone.loadFromFile("Mainfone.jpg")) {
+        std::cout << "Error(panel is undefined)" << std::endl;
+        return -1;
+    }
+    Sprite mainFone;
+    mainFone.setTexture(fone);
+
+
+
+
+
+
+    Texture Menu1;
+
+    if (!Menu1.loadFromFile("rectangle1.png")) {
+        std::cout << "Error(panel is undefined)" << std::endl;
+        return -1;
+    }
+    Sprite rectangle1;
+    rectangle1.setTexture(Menu1);
+    rectangle1.setPosition(1350,300);
+
+
+
+    Texture Menu2;
+
+    if (!Menu2.loadFromFile("View.png")) {
+        std::cout << "Error(panel is undefined)" << std::endl;
+        return -1;
+    }
+
+
+    Sprite text1;
+    text1.setTexture(Menu2);
+    text1.setPosition(1370,330);
+
+
+
+
+
+
+
+
+
+
+
+
+    Texture Menu3;
+
+    if (!Menu3.loadFromFile("rectangle2.png")) {
+        std::cout << "Error(panel is undefined)" << std::endl;
+        return -1;
+    }
+    Sprite rectangle2;
+    rectangle2.setTexture(Menu3);
+    rectangle2.setPosition(1350,450);
+
+
+    Texture Menu4;
+
+    if (!Menu4.loadFromFile("manage.png")) {
+        std::cout << "Error(panel is undefined)" << std::endl;
+        return -1;
+    }
+    Sprite text2;
+    text2.setTexture(Menu4);
+    text2.setPosition(1370,480);
+
+
+
+
+
+
+
+
+
+
+    Texture Menu5;
+
+    if (!Menu5.loadFromFile("rectangle3.png")) {
+        std::cout << "Error(panel is undefined)" << std::endl;
+        return -1;
+    }
+    Sprite rectangle3;
+    rectangle3.setTexture(Menu5);
+    rectangle3.setPosition(1350,600);
+
+    Texture Menu6;
+
+    if (!Menu6.loadFromFile("exit.png")) {
+        std::cout << "Error(panel is undefined)" << std::endl;
+        return -1;
+    }
+    Sprite text3;
+    text3.setTexture(Menu6);
+    text3.setPosition(1370,630);
+
+
+
+
+
+
+
+
+    Texture Snow;
+    if (!Snow.loadFromFile("Snow.png")) {
+        std::cout << "Error(Snow is undefined)" << std::endl;
+        return -1;
+    }
+
+    std::vector<Sprite> snowBall;
+    const int num = 50;
+    std::random_device rd;
+    std::mt19937 gen(rd()); // Инициализация генератора
+    std::uniform_real_distribution<> disX(0, 1920); // Для координаты X
+    std::uniform_real_distribution<> disY(0, 1080);
+
+
+    for(int i =0;i<num;i++){
+        Sprite snow;
+        snow.setTexture(Snow);
+        float x = disX(gen);
+        float y = disY(gen);
+
+        snow.setPosition(x,y);
+
+        snowBall.push_back(snow);
+
+    }
+
+    // Загружаем текстуру фона
+    //Texture textureBackSpace;
+    //if (!textureBackSpace.loadFromFile("zz.jpg")) {
+        //std::cerr << "Error(texture is undefined)" << std::endl;
+        //return -1;
+    //}
+
+    Vector2f pos;
+    float time;
+    bool isTrue = true;
+    float duration = 5.0f;
+    float speed = 5.0f;
+
+
+    // Главный цикл приложения
+    while (win.isOpen())
+        {
+        Event event;
+
+        Clock clock;
+        float time = clock.getElapsedTime().asMicroseconds();
+        std::vector<float> disappearTimes(num, 0);
+        std::vector<float> randomDelays(num, 0);
+
+
+
+        while (win.pollEvent(event))
+        {
+            if (event.type == Event::Closed)
+            {
+                 win.close();
+            }
+            if(event.type == Event::MouseButtonPressed){
+                Vector2i mousePos = Mouse::getPosition(win);
+                if (text1.getGlobalBounds().contains((float)mousePos.x, (float)mousePos.y)) {
+
+                        openFreeMovement(win);
+                    }
+                if(text2.getGlobalBounds().contains((float)mousePos.x, (float)mousePos.y)){
+                    manageKeyboardShip(win);
+                }
+                if(text3.getGlobalBounds().contains((float)mousePos.x, (float)mousePos.y)){
+                    win.close();
+                }
+
+            }
+
+        }
+
+
+        win.clear();
+        win.draw(mainFone);
+        win.draw(rectangle1);
+        win.draw(text1);
+        win.draw(rectangle2);
+        win.draw(text2);
+        win.draw(rectangle3);
+        win.draw(text3);
+
+
+        for(Sprite& snowflacke:snowBall){
+            snowflacke.move(0,0.5*time);
+            if(snowflacke.getPosition().y > 1080){
+                float x = disX(gen);
+
+                snowflacke.setPosition(x,0);
+                snowflacke.move(0,0.5*time);
+
+            }
+            win.draw(snowflacke);
+        }
+
+
+
+
+
+
+
+            win.display();
+        }
+
+}
+
